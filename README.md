@@ -1,6 +1,20 @@
 # Project tudu
+- Tasks erstellen
+- Tasks auflisten
+- einzelne Tasks ansehen
+- Tasks aktualisieren
+- Tasks löschen
+- nach Status filtern
 
-One Paragraph of project description goes here
+Eine Task hat:
+- id
+- title
+- description optional
+- status
+- priority
+- due_date optional
+- created_at
+- updated_at
 
 ## Getting Started
 

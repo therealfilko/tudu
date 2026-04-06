@@ -1,15 +1,40 @@
 services:
-  psql_bp:
-    image: postgres:latest
+  api: 
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
     restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${BLUEPRINT_DB_DATABASE}
-      POSTGRES_USER: ${BLUEPRINT_DB_USERNAME}
-      POSTGRES_PASSWORD: ${BLUEPRINT_DB_PASSWORD}
+    depends_on:
+      - db
     ports:
-      - "${BLUEPRINT_DB_PORT}:5432"
+      - "${PORT}:${PORT}"
+    environment:
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PORT=${DB_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_SCHEMA=${DB_SCHEMA}
+      - PORT=${PORT}
+    networks:
+      - foo
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5434:5432"
     volumes:
-      - psql_volume_bp:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
+    networks:
+        - foo
 
 volumes:
-  psql_volume_bp:
+  db:
+
+networks:
+  foo:
